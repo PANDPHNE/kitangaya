@@ -1,0 +1,33 @@
+name: Update catalog
+on:
+  schedule:
+    - cron: '25 * * * *'      # every hour (a few minutes after the Google side publishes)
+  workflow_dispatch: {}        # "Run workflow" button for an update right now
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency: { group: pages, cancel-in-progress: false }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: '${{ steps.deploy.outputs.page_url }}' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install --no-audit --no-fund
+      - uses: actions/cache@v4
+        with:
+          path: cache
+          key: photos-${{ github.run_id }}
+          restore-keys: photos-
+      - run: node tools/build.mjs
+        env: { CATALOG_ID: 1MOyZ69UzFpm7QgIbz1nJWZu2eVa6AZ-b }
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
+      - id: deploy
+        uses: actions/deploy-pages@v4
