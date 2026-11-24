@@ -1,41 +1,102 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kitang Aya Phoneshop · Available units</title>
-<meta name="description" content="Available second-hand flagship phones at Kitang Aya Phoneshop. Updated every hour.">
-<meta property="og:title" content="Kitang Aya Phoneshop · Available units"><meta property="og:description" content="Murang flagship · updated every hour">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600;700&family=Courier+Prime&display=swap" rel="stylesheet">
+<title>Kitang Aya Phoneshop · Available phones</title>
+<meta name="description" content="Murang flagship phones at Kitang Aya Phoneshop. See every available unit with real photos, price and honest condition. Updated every hour.">
+<meta property="og:title" content="Kitang Aya Phoneshop · Available phones"><meta property="og:description" content="Real photos · honest condition · updated every hour">
+<meta name="theme-color" content="#0B3D2E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Courier+Prime&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Onest,system-ui,sans-serif;background:#F6F1EA;color:#1D2A24;font-size:15px}
-header{background:#0B3D2E;color:#fff;padding:14px 16px 12px;position:sticky;top:0;z-index:5}
-header .row1{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;max-width:1300px;margin:0 auto}
-header h1{margin:0;font-size:19px;color:#B9F227}header .sub{font-size:12.5px;opacity:.8}
-.bar{max-width:1300px;margin:10px auto 0;display:flex;gap:8px;flex-wrap:wrap}
-.bar input,.bar select{font:inherit;font-size:14px;padding:9px 11px;border-radius:10px;border:0;background:#fff;color:#1D2A24}
-.bar input{flex:1 1 220px}.bar select{flex:0 0 auto}
-.chips{max-width:1300px;margin:8px auto 0;display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
-.chips button{flex:0 0 auto;font:inherit;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:99px;padding:5px 12px;cursor:pointer}
-.chips button.on{background:#B9F227;color:#0B3D2E;border-color:#B9F227}
-main{max-width:1300px;margin:0 auto;padding:14px}
-.count{color:#5B6660;font-size:13px;margin:0 2px 10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-.it{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer;display:flex;flex-direction:column}
+:root{--g:#0B3D2E;--lime:#B9F227;--bg:#F6F1EA;--ink:#17231D;--mut:#5B6660;--card:#fff;--fs:16px}
+html.big{--fs:19px}
+*{box-sizing:border-box}html{font-size:var(--fs)}body{margin:0;font-family:Onest,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:1rem;line-height:1.45}
+button,select,input{font:inherit}a{color:inherit}
+:focus-visible{outline:3px solid #2F7DF6;outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 14px}
+/* header */
+header{background:var(--g);color:#fff}
+.hd{display:flex;align-items:center;gap:10px;padding:14px 0 6px}
+.hd h1{margin:0;font-size:1.3rem;font-weight:800;color:var(--lime);line-height:1.15}
+.hd .sp{flex:1}
+.tbtn{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:8px 12px;font-weight:700;font-size:.9rem;cursor:pointer;min-height:44px}
+.tag{font-size:.95rem;opacity:.92;padding:0 0 14px}
+.tag b{color:var(--lime)}
+/* how to buy */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 0 16px}
+.how div{background:rgba(255,255,255,.08);border-radius:14px;padding:10px;font-size:.88rem;line-height:1.3}
+.how b{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--lime);color:var(--g);font-size:.95rem;margin-bottom:6px}
+/* search */
+.sbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:12px 0 8px;box-shadow:0 6px 12px -10px rgba(0,0,0,.25)}
+.srch{display:flex;gap:8px}
+.srch input{flex:1;min-width:0;height:52px;border-radius:14px;border:2px solid #D6CFC4;background:#fff;padding:0 14px 0 44px;font-size:1.05rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%235B6660' stroke-width='2.4'%3E%3Ccircle cx='9' cy='9' r='6.5'/%3E%3Cpath d='m14 14 4.5 4.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:14px center}
+.srch input:focus{border-color:var(--g);outline:none}
+.srch select{height:52px;border-radius:14px;border:2px solid #D6CFC4;background:#fff;padding:0 10px;font-weight:600;max-width:44%}
+/* what are you looking for */
+h2{font-size:1.15rem;margin:18px 0 10px}
+.quick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.q{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #E4DDD2;border-radius:16px;padding:10px 12px;min-height:58px;cursor:pointer;text-align:left;font-weight:700;font-size:.98rem;color:var(--ink)}
+.q .i{font-size:1.5rem;line-height:1}.q small{display:block;font-weight:500;color:var(--mut);font-size:.8rem}
+.q.on{border-color:var(--g);background:#EEF6E0;box-shadow:inset 0 0 0 1px var(--g)}
+/* results */
+.rh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 10px}
+.rh .n{font-weight:800;font-size:1.1rem}.rh .f{color:var(--mut);font-size:.92rem}
+.clr{background:none;border:0;color:#1F5FBF;font-weight:700;text-decoration:underline;cursor:pointer;padding:8px 4px;min-height:44px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr);gap:14px}}
+@media(min-width:1000px){.grid{grid-template-columns:repeat(4,1fr)}}
+.it{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);display:flex;flex-direction:column;cursor:pointer;border:0;padding:0;text-align:left;color:inherit}
 .it canvas,.it .ph{width:100%;aspect-ratio:1/1;display:block;background:#E9E3D9}
-.it .ph{display:flex;align-items:center;justify-content:center;color:#8A928D;font-size:13px;text-align:center;padding:16px;background:#0B3D2E;color:#E9F5D0;flex-direction:column;gap:6px}
-.it .ph b{font-family:'Courier Prime',monospace;font-size:20px;letter-spacing:.12em}
-.it .tx{padding:9px 11px 11px;font-size:13px;line-height:1.35}.it .tx b{display:block}.it .pr{color:#0B3D2E;font-weight:700;font-size:15px;margin-top:3px}
-.empty{padding:40px;text-align:center;color:#6B756F}
-footer{text-align:center;color:#6B756F;font-size:12.5px;padding:26px 14px 40px}
-.cta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.cta a{flex:1 1 140px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;border-radius:11px;padding:11px 12px}
-.cta .m{background:#B9F227;color:#0B3D2E}.cta .o{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.it .ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:#1C4A3B;color:#E9F5D0;text-align:center;padding:10px}
+.it .ph b{font-family:'Courier Prime',monospace;font-size:1.15rem;letter-spacing:.1em}.it .ph span{font-size:.8rem;opacity:.85}
+.it .tx{padding:10px 11px 12px;display:flex;flex-direction:column;gap:3px;flex:1}
+.pr{font-size:1.25rem;font-weight:800;color:var(--g);line-height:1.1}.pr s{font-size:.8rem;color:var(--mut);font-weight:500;margin-left:4px}
+.md{font-weight:700;font-size:.95rem;line-height:1.25}.sp2{color:var(--mut);font-size:.85rem}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.ch{font-size:.74rem;font-weight:700;border-radius:8px;padding:2px 7px;background:#EEF6E0;color:#2F5D16}.ch.w{background:#FFF1D6;color:#7A4B00}
+.see{margin-top:auto;padding-top:8px}.see span{display:block;text-align:center;background:var(--g);color:var(--lime);font-weight:800;border-radius:12px;padding:10px 6px;font-size:.92rem}
+.more{display:block;margin:18px auto 6px;background:#fff;border:2px solid var(--g);color:var(--g);font-weight:800;border-radius:14px;padding:14px 22px;min-height:52px;cursor:pointer;font-size:1rem}
+.empty{background:#fff;border-radius:16px;padding:26px;text-align:center;color:var(--mut)}
+/* floating message button */
+.fab{position:fixed;right:14px;bottom:14px;z-index:30;background:var(--lime);color:var(--g);font-weight:800;border-radius:99px;padding:14px 18px;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.25);font-size:1rem;min-height:52px;display:flex;align-items:center;gap:6px}
+footer{background:var(--g);color:#E6EFE9;margin-top:34px;padding:22px 0 90px;font-size:.92rem}
+footer a{color:var(--lime);font-weight:700}
+footer .lk{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+footer .lk a{background:rgba(255,255,255,.1);border-radius:12px;padding:10px 14px;text-decoration:none;min-height:44px}
+/* item view (on top of the photo viewer) */
+.kpv-info{font-size:1rem!important}
+.kpv-info .big{font-size:1.6rem;font-weight:800;color:var(--lime);margin:2px 0}
+.kpv-info .md2{font-size:1.05rem;font-weight:700}
+.kpv-info .act{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.kpv-info .act a{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:800;border-radius:14px;padding:14px;min-height:54px;font-size:1.02rem}
+.kpv-info .act .m{background:var(--lime);color:var(--g)}.kpv-info .act .o{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.kpv-info .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpv-info .tip{background:rgba(185,242,39,.12);border-radius:12px;padding:10px 12px;font-size:.9rem;color:#E9F5D0}
+.kpv-info h4{margin:14px 0 4px;font-size:1rem}
+.kpv-info .hint{color:#A9B3AD;font-size:.85rem;margin-top:10px}
+.kpv-top button{min-height:44px;font-size:1rem!important;font-weight:700}
+@media(max-width:899px){.kpv-info{max-height:46vh!important}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style></head><body>
-<header><div class="row1"><h1>Kitang Aya Phoneshop</h1><span class="sub" id="sub">Loading available units…</span></div>
-<div class="bar"><input id="q" type="search" placeholder="Search model or code (e.g. S23 Ultra, KA10070)" autocomplete="off">
-<select id="pr"><option value="">Any price</option><option value="0-5000">Up to ₱5,000</option><option value="5000-10000">₱5,000 – 10,000</option><option value="10000-20000">₱10,000 – 20,000</option><option value="20000-35000">₱20,000 – 35,000</option><option value="35000-">₱35,000 and up</option></select>
-<select id="cn"><option value="">Any condition</option><option value="ok">No issue</option><option value="iss">With issues (mamaw sa specs)</option></select>
-<select id="so"><option value="new">Newest first</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option></select></div>
-<div class="chips" id="br"></div></header>
-<main><div class="count" id="cnt"></div><div class="grid" id="grid"></div><div class="empty hide" id="none" style="display:none">No units match. Try another search.</div></main>
-<footer id="ft"></footer>
+<header><div class="wrap">
+ <div class="hd"><h1>Kitang Aya<br>Phoneshop</h1><span class="sp"></span><button class="tbtn" id="bigt" aria-pressed="false">A+ Bigger text</button></div>
+ <div class="tag" id="sub">Real photos · honest condition · <b>updated every hour</b></div>
+ <div class="how" aria-label="How to buy">
+  <div><b>1</b>Pick a phone you like</div><div><b>2</b>Tap it to see photos and condition</div><div><b>3</b>Message us the item code to reserve</div>
+ </div>
+</div></header>
+<div class="sbar"><div class="wrap"><div class="srch">
+ <label class="vh" for="q">Search</label><input id="q" type="search" placeholder="Search a model, e.g. S23 Ultra" autocomplete="off" enterkeyhint="search">
+ <label class="vh" for="so">Sort</label><select id="so"><option value="photo">Best match</option><option value="lo">Lowest price</option><option value="hi">Highest price</option><option value="new">Newest</option></select>
+</div></div></div>
+<main class="wrap">
+ <h2>What are you looking for?</h2>
+ <div class="quick" id="quick"></div>
+ <div class="rh"><span class="n" id="cnt"></span><span class="f" id="fl"></span><button class="clr" id="clr" hidden>Show all phones</button></div>
+ <div class="grid" id="grid"></div>
+ <div class="empty" id="none" hidden>No phone matches that yet.<br><button class="clr" id="clr2">Show all phones</button></div>
+ <button class="more" id="more" hidden>Show more phones</button>
+</main>
+<footer><div class="wrap" id="ft"></div></footer>
+<a class="fab" id="fab" hidden target="_blank" rel="noopener">💬 Message us</a>
 <script src="config.js"></script><script src="kp-common.js"></script><script src="app.js"></script>
 </body></html>
