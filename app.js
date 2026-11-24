@@ -31,7 +31,7 @@ function condRows(o){return kpShortCond(o.diag,o.status).map(function(x){var k=T
 function condBox(o){var rows=condRows(o),f=rows.filter(function(r){return r.k==='f'}).length,c=rows.filter(function(r){return r.k==='c'}).length,calm;
   if(noIssue(o)&&!f&&!c)calm='<div class="calm ok"><b class="ch1">✨ Walang issue — malinis, gumagana lahat.</b>Pagdating sa\'yo, gamit na agad.</div>';
   else if(!f)calm='<div class="calm ok"><b class="ch1">💪 Panlabas lang lahat \'yan.</b>Walang epekto sa performance. Mas mura, pero parehong lakas — sulit na sulit.</div>';
-  else calm='<div class="calm info"><b class="ch1">🔍 Sinabi na namin lahat. Walang tinatago.</b>Kaya ganito kababa ang presyo — pero mamaw pa rin sa specs. Duda ka pa? <b>I-message mo kami, ipapakita namin sa video.</b> 💪</div>';
+  else calm='<div class="calm info"><b class="ch1">🔍 We list everything. No surprises.</b>Kaya ganito kababa ang presyo — pero mamaw pa rin sa specs. Gusto mo ng patunay? <b>I-message mo kami, ipapakita namin sa video.</b> 💪</div>';
   return '<div class="box"><h3>Honest condition check 👇</h3><ul class="cl">'+rows.map(function(r){return '<li><span class="k '+r.k+'">'+(r.k==='c'?'COSMETIC':r.k==='f'?'HEADS-UP':'✓ OK')+'</span><span>'+esc(r.t)+'</span></li>'}).join('')+'</ul>'+calm+'</div>'}
 /* ── quick picks (how shoppers think) ── */
 var QUICK=[
