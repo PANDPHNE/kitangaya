@@ -10,5 +10,6 @@ window.KA_CONFIG = {
   // assurance shown on every phone (keep these true)
   PROMISES: ['✅ Checked & tested', '🛡️ Up to 7-day warranty', '🚚 Ships in 24–48 hrs', '💳 GCash · Maya · BDO · Cash'],
   // inquiry form (Google Form → INQUIRIES tab). Filled in by Claude after setup.
-  FORM: { action: '', code: '', name: '', mobile: '', fb: '', want: '', msg: '', page: '' }
+  FORM: { action: 'https://docs.google.com/forms/d/e/1FAIpQLSdYt8Zf8fqAzPtGc0ZI1j_s50VfQwGDCIhcG9qcmB9wWVzrjw/formResponse',
+    code: 'entry.1861826435', name: 'entry.1895610843', mobile: 'entry.1227015568', fb: 'entry.1216042472', want: 'entry.82969421', msg: 'entry.273748800', page: 'entry.550005977' }
 };
