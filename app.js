@@ -11,10 +11,14 @@ function specs(o){return [o.storage,o.color].filter(Boolean).join(' · ')}
 function save(o){var m=Number(o.market)||0,n=num(o);return m&&n&&m>n?{m:m,s:m-n,p:Math.round((m-n)/m*100)}:null}
 function priceHtml(o){var s=kpNumTxt(o.saleTxt),r=kpNumTxt(o.priceTxt),n=s||r;return n?peso(n)+(s&&r>s?'<s>'+peso(r)+'</s>':''):'Price on request'}
 function phone(){return String(C.PHONE||'').replace(/[^\d+]/g,'')}
+function link(o){return location.origin+location.pathname+(o?'#'+o.code:'')}
 function mText(o,kind){var base='Hi Kitang Aya! ';if(!o)return base+'May tanong po ako.';
-  return base+(kind==='video'?'Pa-flex po ng actual video ng ':'Interested po ako sa ')+o.code+' ('+model(o)+(o.storage?' '+o.storage:'')+', '+(num(o)?peso(num(o)):'price?')+'). Available pa po?'}
+  return base+(kind==='video'?'Pa-flex po ng actual video ng ':'Interested po ako sa ')+o.code+' ('+model(o)+(o.storage?' '+o.storage:'')+', '+(num(o)?peso(num(o)):'price?')+'). Available pa po?\n👉 '+link(o)}
 function mUrl(o,kind){return C.MESSENGER?C.MESSENGER+(C.MESSENGER.indexOf('?')<0?'?':'&')+'text='+encodeURIComponent(mText(o,kind)):''}
 function img(src){return kpLoadImg(src)}
+function copyTxt(t){try{if(navigator.clipboard)return navigator.clipboard.writeText(t)}catch(e){}var x=document.createElement('textarea');x.value=t;document.body.appendChild(x);x.select();try{document.execCommand('copy')}catch(e){}x.remove();return Promise.resolve()}
+/* tapping any Messenger button: copy the message (code + link) so they can paste it if Messenger opens blank */
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-msg]');if(!a)return;copyTxt(a.dataset.msg);toast('Message copied — paste it in Messenger if it\'s empty')},true);
 function toast(t){var d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(function(){d.remove()},2200)}
 var store={get:function(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 var SAVED=store.get('ka_saved',[]);
@@ -86,14 +90,14 @@ function open(o,noPush){if(!o)return;close(true);var i=ALL.indexOf(o),p=phone(),
    '<div class="ppin"><div class="ppcols"><div class="gal"><div class="gmain" id="gm"></div><div class="gthumbs" id="gt"></div><div class="ghint">Swipe for more photos · tap a photo to zoom</div></div><div>'+
    '<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge hot">🔥 1 unit only — paunahan!</span><span class="badge code">'+esc(o.code)+'</span></div>'+
    '<div class="pt">'+esc(model(o))+'</div><div class="ps">'+esc(specs(o))+'</div><div class="pbig">'+priceHtml(o)+'</div>'+cmp(o)+
-   '<div class="cta">'+(C.MESSENGER?'<a class="btn l" target="_blank" rel="noopener" href="'+esc(mUrl(o,'video'))+'">🎥 Message us — we\'ll flex it on video 💪</a>':'')+
-     (C.MESSENGER?'<a class="btn p" target="_blank" rel="noopener" href="'+esc(mUrl(o))+'">💬 Chat about '+esc(o.code)+' on Messenger</a>':'')+
+   '<div class="cta">'+(C.MESSENGER?'<a class="btn l" target="_blank" rel="noopener" data-msg="'+esc(mText(o,'video'))+'" href="'+esc(mUrl(o,'video'))+'">🎥 Message us — we\'ll flex it on video 💪</a>':'')+
+     (C.MESSENGER?'<a class="btn p" target="_blank" rel="noopener" data-msg="'+esc(mText(o))+'" href="'+esc(mUrl(o))+'">💬 Chat about '+esc(o.code)+' on Messenger</a>':'')+
      (p?'<div class="row"><a class="btn o" href="tel:'+p+'">📞 Call</a><a class="btn o" href="sms:'+p+'?body='+encodeURIComponent(mText(o))+'">✉ Text</a></div>':'')+'</div>'+
    '<div class="promises">'+(C.PROMISES||[]).map(function(x){return '<div>'+esc(x)+'</div>'}).join('')+'</div>'+
    condBox(o)+
    '<div class="box" id="fbx"><h3>Reserve it or ask us</h3><p class="ps" style="margin:0">Leave your number and we\'ll message you. Free to ask, no pressure.</p><div id="fslot"></div></div>'+
    '</div></div><div class="sec"><h2>Similar phones, similar price</h2></div><div class="sim" id="sim"></div></div>'+
-   '<div class="dock">'+(C.MESSENGER?'<a class="btn l" target="_blank" rel="noopener" href="'+esc(mUrl(o))+'">💬 Chat</a>':'')+(p?'<a class="btn o sq" href="tel:'+p+'" aria-label="Call">📞</a>':'')+'<button class="btn p" data-a="reserve">Reserve '+esc(o.code)+'</button></div>';
+   '<div class="dock">'+(C.MESSENGER?'<a class="btn l" target="_blank" rel="noopener" data-msg="'+esc(mText(o))+'" href="'+esc(mUrl(o))+'">💬 Chat</a>':'')+(p?'<a class="btn o sq" href="tel:'+p+'" aria-label="Call">📞</a>':'')+'<button class="btn p" data-a="reserve">Reserve '+esc(o.code)+'</button></div>';
   document.body.appendChild(d);document.body.style.overflow='hidden';PP=d;
   formInto(d.querySelector('#fslot'),o,'Reserve this unit');
   /* gallery */
@@ -109,10 +113,15 @@ function open(o,noPush){if(!o)return;close(true);var i=ALL.indexOf(o),p=phone(),
   d.onclick=function(e){var a=e.target.closest('[data-a]');if(!a)return;var k=a.dataset.a;
     if(k==='back')history.length>1&&location.hash?history.back():close();
     if(k==='save'){var on=toggleSave(o.code);a.classList.toggle('on',on);a.textContent=on?'♥':'♡';draw(true)}
-    if(k==='share'){var url=location.href.split('#')[0]+'#'+o.code;if(navigator.share)navigator.share({title:model(o),text:model(o)+' '+(num(o)?peso(num(o)):''),url:url}).catch(function(){});else{try{navigator.clipboard.writeText(url);toast('Link copied')}catch(x){}}}
+    if(k==='share')shareItem(o,slides[0]);
     if(k==='reserve'){d.querySelector('#fbx').scrollIntoView({behavior:'smooth',block:'start'});var n=d.querySelector('#fbx input');if(n)setTimeout(function(){n.focus()},400)}};
   var rv=store.get('ka_seen',[]);rv=[o.code].concat(rv.filter(function(c){return c!==o.code})).slice(0,12);store.set('ka_seen',rv);
   if(!noPush){try{history.pushState({c:o.code},'','#'+o.code)}catch(e){}}d.querySelector('.back').focus()}
+function shareItem(o,s){var txt=o.code+' · '+model(o)+(o.storage?' '+o.storage:'')+' · '+(num(o)?peso(num(o)):'')+'\nKitang Aya Phoneshop — one unit only, paunahan!\n👉 '+link(o);
+  Promise.resolve(s&&s.src).then(function(u){return u?fetch(u).then(function(r){return r.blob()}):null}).then(function(b){var f=b?new File([b],o.code+'.jpg',{type:'image/jpeg'}):null;
+    if(f&&navigator.canShare&&navigator.canShare({files:[f]}))return navigator.share({files:[f],text:txt,title:o.code});
+    if(navigator.share&&!f)return navigator.share({text:txt,title:o.code});
+    copyTxt(txt);if(f){var a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=o.code+'.jpg';document.body.appendChild(a);a.click();a.remove()}toast(f?'Photo saved + details copied — paste with the photo':'Details copied')}).catch(function(){})}
 function close(silent){if(!PP)return;PP.remove();PP=null;document.body.style.overflow='';var v=document.querySelector('.kpv');if(v)v.remove()}
 window.addEventListener('popstate',function(){var h=location.hash.slice(1).toUpperCase(),o=h&&ALL.find(function(x){return x.code===h});if(o)open(o,true);else close()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&PP&&!document.querySelector('.kpv'))(location.hash?history.back():close())});
