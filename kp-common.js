@@ -5,6 +5,13 @@ function kpKeepCaps(s){return s.replace(/\b(amoled|lcd|sim|ntc|bh|imei|fps|ois|n
 function kpJoin(a){a=a.filter(Boolean);return a.length<2?(a[0]||''):a.slice(0,-1).join(', ')+' & '+a[a.length-1]}
 /* Sheet B diagnosis → short bullet lines. Groups dents / scratches / cracks / display issues, tags (Any SIM, NTC, unit only) last.
    Loose back case is left out only when the unit is FOR REGLUE (fixed before release = house rule). */
+/* minor fixes we do before release: loose / missing back case, buttons, tray, screws, small parts, reglue, camera cleaning */
+var KP_FIX=/\b(loose|missing|lost|no|walang|kulang|detached|wobbly|uga|natanggal|tanggal)\b.*\b(back ?case|back ?cover|back ?glass|backglass|buttons?|power ?button|volume ?buttons?|side ?buttons?|sim ?tray|tray|screws?|parts?|s ?pen|pen|cover|bracket)\b|^(for )?(reglue|camera cleaning)$/i;
+function kpIsFix(l){l=String(l||'').toLowerCase().trim();return !/^no issue/.test(l)&&KP_FIX.test(l)}
+/* what was left off the card (so staff can check / edit) */
+function kpHiddenFixes(diag){return String(diag||'').split(/[,;\n]+|\s\/\s/).map(function(s){return s.replace(/\s+/g,' ').trim()}).filter(function(s){return s&&kpIsFix(s)})}
+/* the condition lines shown on the card: the staff-edited caption if there is one, else the automatic short version */
+function kpCondLines(o){if(o&&o.condEdit&&String(o.condEdit).trim())return String(o.condEdit).split(/\n+/).map(function(s){return s.replace(/^\s*[•\-\*]\s*/,'').trim()}).filter(Boolean);return kpShortCond(o&&o.diag,o&&o.status)}
 function kpShortCond(diag,status){
   var reglue=/REGLUE/i.test(status||''),parts=String(diag||'').split(/[,;\n]+|\s\/\s/).map(function(s){return s.replace(/\s+/g,' ').trim()}).filter(Boolean);
   var G={dents:[],sdents:[],scr:[],crk:[],disp:[]},order=[],other=[],tags=[],seen={};
@@ -14,7 +21,7 @@ function kpShortCond(diag,status){
     var l=p.toLowerCase(),m;
     if(seen[l])return;seen[l]=1;
     if(/^(for )?camera cleaning$|^for (reglue|sale|job)$/.test(l))return;
-    if(reglue&&/^loose ?back ?(case|cover)$/.test(l))return;
+    if(kpIsFix(l))return;   /* minor fixes done before release are not shown on the card (staff see them as hidden) */
     if(/^(any ?sim|open ?line|openline)$/.test(l)){if(tags.indexOf('Any SIM')<0)tags.push('Any SIM');return}
     if(/^ntc ?approved$/.test(l)){tags.push('NTC Approved');return}
     if(/^unit only$/.test(l)){tags.push('Unit only');return}
@@ -48,7 +55,7 @@ function kpPrice(o){var sale=kpNumTxt(o.saleTxt),reg=kpNumTxt(o.priceTxt),n=sale
   var t='₱'+Math.round(n).toLocaleString('en-US');if(sale&&reg&&reg>sale)t+=' (SALE · was ₱'+Math.round(reg).toLocaleString('en-US')+')';else if(/promo/i.test(o.saleTxt||o.priceTxt))t+=' (PROMO)';return t}
 var KP_CTA=['I-message ang page para sa info!','PAUNAHAN LANG!'];
 /* the short caption for the post = exactly what the card says */
-function kpShortCaption(o){return [o.code,kpTitle(o),kpPrice(o),'','Condition:'].concat(kpShortCond(o.diag,o.status).map(function(x){return '• '+x})).concat(['']).concat(KP_CTA).join('\n')}
+function kpShortCaption(o){return [o.code,kpTitle(o),kpPrice(o),'','Condition:'].concat(kpCondLines(o).map(function(x){return '• '+x})).concat(['']).concat(KP_CTA).join('\n')}
 function kpWrap(ctx,text,w){var words=String(text).split(' '),lines=[],cur='';words.forEach(function(wd){var t=cur?cur+' '+wd:wd;if(ctx.measureText(t).width<=w||!cur)cur=t;else{lines.push(cur);cur=wd}});if(cur)lines.push(cur);return lines}
 /* draw the approved BATCH card on a canvas. front/back = loaded Image/ImageBitmap; slide = 0..40 (% the back photo moves left) */
 /* layout saved per item: "left,up/down,size" in %. Old items saved a plain number = left only. */
@@ -69,7 +76,7 @@ function kpDrawCard(cv,front,back,o,layout,S){
   var sp=fz*.16,cw=code.split('').map(function(ch){return c.measureText(ch).width}),tw=cw.reduce(function(a,b){return a+b},0)+sp*(code.length-1),x=bx+bs/2-tw/2;
   code.split('').forEach(function(ch,i){c.fillText(ch,x,KPC.CODE_Y*S);x+=cw[i]+sp});
   // details block · Onest on a black panel that hugs the text (never past the card), shrinks until everything fits
-  var T=KPC.TXT,pad=S*.016,x0=T.x0*S,w=(T.x1-T.x0)*S,top=T.y0*S,bottom=T.y1*S-pad,cond=kpShortCond(o.diag,o.status),best=null;
+  var T=KPC.TXT,pad=S*.016,x0=T.x0*S,w=(T.x1-T.x0)*S,top=T.y0*S,bottom=T.y1*S-pad,cond=kpCondLines(o),best=null;
   for(var f=.0205;f>=.0118;f-=.0007){
     var px=S*f,lh=px*1.38,gap=lh*.55,rows=[];c.font='600 '+px+'px Onest, sans-serif';
     kpWrap(c,kpTitle(o),w).forEach(function(t){rows.push([t,600])});rows.push([kpPrice(o),700]);rows.push(['',0,gap]);rows.push(['Condition:',600]);
@@ -143,7 +150,7 @@ function kpView(slides,start,title,info,acts){
 }
 function kpEsc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 /* details panel for one item */
-function kpInfoHtml(o){var cond=kpShortCond(o.diag,o.status);
+function kpInfoHtml(o){var cond=kpCondLines(o);
   return '<div class="t">'+kpEsc(kpTitle(o))+'</div><div class="p">'+kpEsc(kpPrice(o))+'</div>'+
    '<div class="m">'+kpEsc([o.status||'',o.sold?'SOLD':'',o.postedTxt?'posted '+o.postedTxt:'not posted yet'].filter(Boolean).join(' · '))+'</div>'+
    '<div style="margin-top:8px;font-weight:600">Condition</div><ul>'+cond.map(function(x){return '<li>'+kpEsc(x)+'</li>'}).join('')+'</ul>'+

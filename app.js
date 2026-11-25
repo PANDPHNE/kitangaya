@@ -31,7 +31,7 @@ function cmp(o){var s=save(o);if(!s)return '';var w=Math.max(8,Math.round(num(o)
 /* ── condition, explained honestly in our voice ── */
 var COSM=/scratch|dent|faded|fade|discolou?r(ed)? (on )?(back|frame|side)|paint|peel|chip(ped)? (on )?(back|frame|side)|loose back ?(case|cover)|crack(s)? (sa|on) (the )?(back ?case|back cover|backglass|back glass|side ?frame|frame|back cam frame|inner frame)|dent/i;
 var TAGS=/^(any sim|ntc approved|unit only|with (box|case|charger|earphones?)|complete inclusions?|no issue|.*·.*)$/i;
-function condRows(o){return kpShortCond(o.diag,o.status).map(function(x){var k=TAGS.test(x)?'t':COSM.test(x)?'c':'f';return {t:x,k:k}})}
+function condRows(o){return kpCondLines(o).map(function(x){var k=TAGS.test(x)?'t':COSM.test(x)?'c':'f';return {t:x,k:k}})}
 function condBox(o){var rows=condRows(o),f=rows.filter(function(r){return r.k==='f'}).length,c=rows.filter(function(r){return r.k==='c'}).length,calm;
   if(noIssue(o)&&!f&&!c)calm='<div class="calm ok"><b class="ch1">✨ Walang issue — malinis, gumagana lahat.</b>Pagdating sa\'yo, gamit na agad.</div>';
   else if(!f)calm='<div class="calm ok"><b class="ch1">💪 Panlabas lang lahat \'yan.</b>Walang epekto sa performance. Mas mura, pero parehong lakas — sulit na sulit.</div>';
