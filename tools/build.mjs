@@ -17,10 +17,10 @@ await fs.writeFile('dist/index.html', html);
 let ok = 0, fail = 0;
 const jobs = []; for (const o of cat.items) if (o.front && o.back) jobs.push([o, 'F', o.front], [o, 'B', o.back]);
 async function one([o, k, id]) {
-  const full = `cache/${id}-f.jpg`, thumb = `cache/${id}-t.jpg`;
+  const full = `cache/${id}-f14.jpg`, thumb = `cache/${id}-t.jpg`;
   if (!(await exists(full)) || !(await exists(thumb))) {
     const src = await get(id);
-    await sharp(src).rotate().resize(1000, 1000, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 80, mozjpeg: true }).toFile(full);
+    await sharp(src).rotate().resize(1400, 1400, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 84, mozjpeg: true }).toFile(full);
     await sharp(src).rotate().resize(600, 600, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 74, mozjpeg: true }).toFile(thumb);
   }
   await fs.copyFile(full, `dist/img/f/${o.code}-${k}.jpg`); await fs.copyFile(thumb, `dist/img/t/${o.code}-${k}.jpg`);
