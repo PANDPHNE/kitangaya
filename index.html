@@ -118,10 +118,34 @@ footer h3{margin:16px 0 6px;font-size:1rem;color:var(--lime)}footer ol{margin:0;
 .dock .btn{flex:1;min-height:54px;font-size:.98rem}.dock .btn.sq{flex:0 0 58px;padding:0}
 @media(min-width:900px){.dock{left:50%;transform:translateX(-50%);max-width:640px;border-radius:18px 18px 0 0}}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:12px;padding:10px 16px;font-weight:700;z-index:300}
+/* GET NOW ordering (Nov 26) */
+.logo img{display:block;height:46px;width:auto}
+.btn.get{display:flex;flex-direction:column;align-items:center;background:var(--hot);color:#fff;font-size:1.08rem;width:100%;min-height:62px;box-shadow:0 6px 16px rgba(229,72,77,.3)}.btn.get small{font-weight:600;font-size:.78rem;opacity:.92}
+.ord .ppin{padding-bottom:110px}.olg{height:30px;width:auto}
+.ostep{display:flex;gap:6px;overflow-x:auto;margin:6px 0 14px;scrollbar-width:none}.ostep span{white-space:nowrap;font-size:.78rem;font-weight:700;color:var(--mut);background:#fff;border-radius:99px;padding:5px 10px;border:1px solid var(--line)}.ostep span.on{background:var(--g);color:var(--lime);border-color:var(--g)}.ostep span.ok{color:var(--g);border-color:var(--g)}
+.ord h2{font-size:1.35rem;margin:4px 0 10px;color:var(--g)}
+.oitem{display:flex;gap:12px;align-items:center;background:#fff;border-radius:14px;box-shadow:var(--sh);padding:10px;margin:8px 0 12px}.oitem img{width:84px;height:84px;object-fit:cover;border-radius:10px;background:#ddd}.oc{font-family:'Courier Prime',monospace;font-size:.85rem;color:var(--mut)}.op{font-weight:800;color:var(--g);font-size:1.2rem}
+.obox{background:#fff;border-radius:14px;box-shadow:var(--sh);padding:14px;margin:12px 0}.obox h3{margin:0 0 8px;font-size:1rem;color:var(--g)}.obox.soft{background:#EEF6E0;box-shadow:none}
+.ol{margin:0;padding:0;list-style:none}.ol li{padding:7px 0;border-bottom:1px dashed var(--line)}.ol li:last-child{border:0}
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}.ogrid div{background:#fff;border-radius:14px;box-shadow:var(--sh);padding:12px;font-size:.95rem}.ogrid span{display:block;color:var(--mut);font-size:.84rem;margin-top:3px}
+.obanner{width:100%;border-radius:12px;display:block}
+.ocour{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0;cursor:pointer;font:inherit;color:inherit}.ocour.on{border-color:var(--g);background:#EEF6E0}.ocour b{display:block;font-size:1.02rem;color:var(--g)}.ocour small{display:block;font-weight:700;color:var(--hot);margin:2px 0 6px}.ocour span{font-size:.9rem;color:var(--ink)}
+.odp{background:var(--g);color:#fff;border-radius:16px;padding:16px;text-align:center;margin:12px 0}.odp b{display:block;font-size:2.2rem;color:var(--lime);letter-spacing:-.02em}.odp small{display:block;opacity:.9}.odp.sm b{font-size:1.6rem}
+.otier{margin:8px 0;font-size:.9rem}.otier summary{cursor:pointer;font-weight:700;color:var(--g)}.otier table{width:100%;border-collapse:collapse;margin-top:6px;background:#fff;border-radius:10px}.otier td{padding:6px 10px;border-bottom:1px solid var(--line)}.otier td:last-child{text-align:right;font-weight:700}
+.ochk{display:flex;gap:10px;align-items:flex-start;background:#fff;border:2px solid var(--g);border-radius:14px;padding:14px;margin:12px 0;font-size:.95rem;cursor:pointer}.ochk input{width:24px;height:24px;flex:none;accent-color:var(--g)}
+.onav{display:flex;justify-content:space-between;gap:10px;margin:16px 0}.onav .btn{flex:1}.onav .btn:disabled{opacity:.45}
+.opay{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.pa{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}.pa img{width:100%;border-radius:8px}.pa b{display:block;color:var(--g)}.pa span{display:block;font-size:.85rem;color:var(--mut)}.cp{margin-top:6px;border:0;background:var(--lime);color:var(--g);font-weight:800;border-radius:10px;padding:7px 8px;width:100%;cursor:pointer;font-family:inherit}
+.oup{display:flex;align-items:center;justify-content:center;min-height:110px;border:2px dashed var(--g);border-radius:14px;background:#F7FBEF center/cover no-repeat;cursor:pointer;text-align:center;font-weight:700;color:var(--g);position:relative}.oup input{position:absolute;opacity:0;inset:0;cursor:pointer}.oup.ok span{background:rgba(11,61,46,.85);color:#fff;border-radius:10px;padding:6px 10px}
+.onote{font-size:.86rem;background:#FFF7E6;border-radius:10px;padding:10px;margin:12px 0 0}
+.btn.big{width:100%;margin-top:14px;min-height:56px;font-size:1.05rem}
+.spin{display:inline-block;width:16px;height:16px;border:3px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:6px}@keyframes sp{to{transform:rotate(360deg)}}
+.ofb,.ofv{width:100%;border:0;border-radius:12px;margin-top:10px;background:#f0f0f0}.ofb{height:420px}.ofv{aspect-ratio:16/9}
+.odone{text-align:center}.odone .big{font-size:3.4rem}.otnc iframe{width:100%;height:calc(100vh - 70px);border:0;background:#fff}
+@media(max-width:520px){.ogrid{grid-template-columns:1fr}}
 </style></head><body>
 <div class="ann">🔥 One unit each — paunahan lang! · Real photos · Honest condition</div>
 <header><div class="wrap">
- <div class="hd"><a class="logo" href="./">Kitang Aya<br><span>Phoneshop</span></a><span class="sp"></span>
+ <div class="hd"><a class="logo" href="./"><img src="assets/logo.png" alt="Kitang Aya Phoneshop"></a><span class="sp"></span>
   <button class="hbtn" id="savedBtn" aria-label="Saved phones">♥ Saved <b id="savedN">0</b></button>
   <button class="hbtn" id="bigt" aria-pressed="false">A+</button></div>
  <div class="hero"><h1>Flagship phones, <em>sulit na presyo.</em><br>Real photos, honest condition.</h1><p id="sub">Loading available phones…</p></div>
@@ -142,5 +166,5 @@ footer h3{margin:16px 0 6px;font-size:1rem;color:var(--lime)}footer ol{margin:0;
 </main>
 <footer><div class="wrap" id="ft"></div></footer>
 <a class="fab" id="fab" hidden target="_blank" rel="noopener">💬 Chat with us</a>
-<script src="config.js"></script><script src="kp-common.js"></script><script src="app.js"></script>
+<script src="config.js"></script><script src="kp-common.js"></script><script src="app.js"></script><script src="order.js"></script>
 </body></html>

@@ -9,10 +9,11 @@ const cat = JSON.parse((await get(ID)).toString('utf8'));
 if (!Array.isArray(cat.items)) throw new Error('catalog.json has no items');
 await fs.rm('dist', { recursive: true, force: true });
 for (const d of ['dist/data', 'dist/img/f', 'dist/img/t', 'cache']) await fs.mkdir(d, { recursive: true });
-for (const f of ['index.html', 'app.js', 'kp-common.js', 'config.js']) await fs.copyFile(f, path.join('dist', f));
+for (const f of ['index.html', 'app.js', 'kp-common.js', 'config.js', 'order.js']) await fs.copyFile(f, path.join('dist', f));
+await fs.cp('assets', 'dist/assets', { recursive: true });
 // cache-busting: browsers always get the scripts that match this page
 const V = Date.now().toString(36); let html = await fs.readFile('dist/index.html', 'utf8');
-for (const f of ['app.js', 'kp-common.js', 'config.js']) html = html.replace(`src="${f}"`, `src="${f}?v=${V}"`);
+for (const f of ['app.js', 'kp-common.js', 'config.js', 'order.js']) html = html.replace(`src="${f}"`, `src="${f}?v=${V}"`);
 await fs.writeFile('dist/index.html', html);
 let ok = 0, fail = 0;
 const jobs = []; for (const o of cat.items) if (o.front && o.back) jobs.push([o, 'F', o.front], [o, 'B', o.back]);
