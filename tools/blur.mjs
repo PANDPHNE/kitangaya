@@ -27,7 +27,8 @@ export async function blurIds(src, kind) {
   for (const [x0, y0, x1, y1] of boxes) {
     const left = Math.max(0, Math.floor(x0)), top = Math.max(0, Math.floor(y0)), width = Math.min(Wd, Math.ceil(x1)) - left, height = Math.min(Ht, Math.ceil(y1)) - top;
     if (width < 4 || height < 4) continue;
-    const piece = await sharp(img).extract({ left, top, width, height }).resize(Math.max(1, Math.round(width / 14)), Math.max(1, Math.round(height / 14))).resize(width, height, { kernel: 'nearest' }).blur(6).toBuffer();
+    // heavy: shrink to a few pixels, stretch back, then blur — digits cannot be read back
+    const piece = await sharp(img).extract({ left, top, width, height }).resize(Math.max(1, Math.round(width / 60)), 1, { fit: 'fill' }).resize(width, height, { fit: 'fill', kernel: 'cubic' }).blur(Math.max(8, Math.round(height / 3))).toBuffer();
     comp.push({ input: piece, left, top });
   }
   const out = comp.length ? await sharp(img).composite(comp).jpeg({ quality: 90 }).toBuffer() : img;
