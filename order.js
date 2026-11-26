@@ -151,6 +151,6 @@
   };
   document.addEventListener('click', function (e) { var a = e.target.closest('a[href]'); if (!a) return; var h = a.getAttribute('href') || '';
     if (/m\.me|messenger|facebook\.com\/messages/.test(h)) ev('msg', CUR.code, CUR.k); else if (/^tel:/.test(h)) ev('call', CUR.code, CUR.k); }, true);
-  var A = window.KA_APP || {}, num = A.num, model = A.model, phone = A.phone, condRows = A.condRows, copyTxt = A.copyTxt, mUrl = A.mUrl, toast = A.toast, specs = A.specs;
+  var A = window.KA_APP || {}, num = A.num, model = A.model, phone = A.phone, condRows = A.condRows, copyTxt = A.copyTxt, mUrl = A.mUrl, toast = A.toast, specs = A.specs, save = A.save;
   window.KA_ORDER = { start: start, dpFor: dpFor };
 })();

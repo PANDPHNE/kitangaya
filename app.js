@@ -170,5 +170,5 @@ fetch('data/catalog.json',{cache:'no-cache'}).then(function(r){return r.json()})
   $('sub').innerHTML='<b style="color:#B9F227">'+ALL.length+' phones</b> available now'+(up?' · updated '+up.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'}):'');
   quick();draw();var h=location.hash.slice(1).toUpperCase();if(h){var o=ALL.find(function(x){return x.code===h});if(o){try{history.replaceState(null,'',location.pathname)}catch(e){}open(o)}}})
  .catch(function(){$('sub').textContent='Could not load the phones. Please refresh the page.'});
-window.KA_APP={num:num,model:model,phone:phone,condRows:condRows,copyTxt:copyTxt,mUrl:mUrl,toast:toast,specs:specs};
+window.KA_APP={num:num,model:model,phone:phone,condRows:condRows,copyTxt:copyTxt,mUrl:mUrl,toast:toast,specs:specs,save:save};
 })();
