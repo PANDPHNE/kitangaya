@@ -28,7 +28,7 @@ async function one([o, k, id]) {
 }
 // ── STORAGE + ABOUT: fetched privately (key), IMEI blurred here, only the blurred copy is published ──
 const KEY = process.env.KP_PH_KEY, WURL = process.env.KP_URL, saOk = new Set();
-async function wpost(body) { const r = await fetch(WURL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body), redirect: 'follow', signal: AbortSignal.timeout(120000) }); const j = await r.json(); if (!j.ok) throw new Error(j.error || 'web app error'); return j; }
+async function wpost(body) { const r = await fetch(WURL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body), redirect: 'follow', signal: AbortSignal.timeout(120000) }); const tx = await r.text(); if (tx.trim().charAt(0) !== '{') throw new Error('posting app did not answer with data (is the web app set to Anyone?)'); const j = JSON.parse(tx); if (!j.ok) throw new Error(j.error || 'web app error'); return j; }
 async function storageAbout() {
   if ((!KEY || !WURL) && !process.env.BLUR_TEST) { console.log('STORAGE/ABOUT: no key yet — skipped'); return; }
   const { blurIds, ocrStop } = await import('./blur.mjs');
@@ -68,7 +68,7 @@ const bad = new Set();
 for (let i = 0; i < jobs.length; i += 6) await Promise.all(jobs.slice(i, i + 6).map(j => one(j).then(() => ok++, e => { fail++; bad.add(j[0].code); console.warn(e.message); })));
 // an item whose photos failed shows "photos coming soon" instead of a broken image
 for (const o of cat.items) if (bad.has(o.code)) { delete o.front; delete o.back; delete o.layout; }
-try { await storageAbout(); } catch (e) { console.warn('STORAGE/ABOUT skipped: ' + e.message); }
+try { await storageAbout(); } catch (e) { console.warn('STORAGE/ABOUT skipped: ' + e.message); } finally { try { (await import('./blur.mjs')).ocrStop(); } catch (e) {} }
 for (const o of cat.items) { if (o.front) { o.front = 1; o.back = 1; if (saOk.has(o.code + 'S')) o.s = 1; if (saOk.has(o.code + 'A')) o.a = 1; } }   // file ids are not needed on the site
 await fs.writeFile('dist/data/catalog.json', JSON.stringify(cat));
 await fs.writeFile('dist/.nojekyll', '');
