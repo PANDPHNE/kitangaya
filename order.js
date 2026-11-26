@@ -30,10 +30,10 @@
     PICK: { i: '🏪', t: 'Pickup sa store', tag: 'Batasan Hills, QC', d: 'Puntahan nyo kami sa <b>Batasan Hills, Quezon City</b> — makikita at matetest nyo mismo ang unit bago bayaran ang balance. Mag-schedule lang ng araw ng visit.' }
   };
   var FIELDS = {
-    LBC: [['name', 'FULL NAME (dapat pareho sa valid ID)'], ['mobile', 'CONTACT NUMBER'], ['branch', 'LBC BRANCH NA PINAKAMALAPIT SA INYO'], ['email', 'EMAIL ADDRESS']],
-    LALA: [['name', 'FULL NAME'], ['mobile', 'CONTACT NUMBER'], ['address', 'ADDRESS NA SEARCHABLE SA LALAMOVE MAP'], ['email', 'EMAIL ADDRESS']],
-    JNT: [['name', 'NAME'], ['mobile', 'CONTACT NUMBER'], ['house', 'HOUSE NUMBER'], ['street', 'STREET / PUROK'], ['brgy', 'BARANGAY'], ['city', 'CITY'], ['prov', 'PROVINCE'], ['landmark', 'LANDMARK (kilalang lugar malapit sa inyo)'], ['email', 'EMAIL ADDRESS']],
-    PICK: [['name', 'NAME'], ['mobile', 'CONTACT NUMBER'], ['email', 'EMAIL'], ['address', 'ADDRESS'], ['visit', 'DATE OF VISIT']]
+    LBC: [['name', 'FULL NAME (dapat pareho sa valid ID)'], ['mobile', 'CONTACT NUMBER'], ['branch', 'LBC BRANCH NA PINAKAMALAPIT SA INYO'], ['email', 'GMAIL / EMAIL (dito namin ipapadala ang order details)']],
+    LALA: [['name', 'FULL NAME'], ['mobile', 'CONTACT NUMBER'], ['address', 'ADDRESS NA SEARCHABLE SA LALAMOVE MAP'], ['email', 'GMAIL / EMAIL (dito namin ipapadala ang order details)']],
+    JNT: [['name', 'NAME'], ['mobile', 'CONTACT NUMBER'], ['house', 'HOUSE NUMBER'], ['street', 'STREET / PUROK'], ['brgy', 'BARANGAY'], ['city', 'CITY'], ['prov', 'PROVINCE'], ['landmark', 'LANDMARK (kilalang lugar malapit sa inyo)'], ['email', 'GMAIL / EMAIL (dito namin ipapadala ang order details)']],
+    PICK: [['name', 'NAME'], ['mobile', 'CONTACT NUMBER'], ['email', 'GMAIL / EMAIL (dito namin ipapadala ang order details)'], ['address', 'ADDRESS'], ['visit', 'DATE OF VISIT']]
   };
   var NOTES = {
     LBC: ['📌 Sagot po ng customer ang shipping fee, dahil mura na po ang items natin ka-kitang.', '🪪 <b>Ang pangalan dito ay dapat pareho sa nasa valid ID</b> — chine-check po yan sa branch bago i-release.', '👪 Kung 18 years old pababa, pangalan po ng guardian na may valid ID ang gamitin.'],
@@ -130,6 +130,7 @@
     if (!S.shot) return bad('Paki-upload po ang screenshot ng bayad.');
     if (miss.length) return bad('Kulang pa po: ' + miss.map(function (f) { return f[1]; }).join(', '));
     if (!/^(\+?63|0)9\d{9}$/.test(String(S.f.mobile).replace(/[^\d+]/g, ''))) return bad('Paki-check po ang contact number (hal. 0917 123 4567).');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(S.f.email || '').trim())) return bad('Paki-check po ang Gmail / email (hal. juan@gmail.com).');
     if (c === 'LALA' && !S.map) return bad('Paki-upload po ang screenshot ng location sa Google Maps.');
     er.hidden = true; var bt = d.querySelector('#osend'); bt.disabled = true; bt.innerHTML = '<span class="spin"></span> Sending… huwag isara';
     var o = S.o, body = { t: 'order', s: SID, code: o.code, item: model(o) + (o.storage ? ' ' + o.storage : ''), price: S.n, dp: dpFor(S.n, c, S.far), courier: COUR[c].t + ' · ' + COUR[c].tag, far: S.far, f: S.f, shot: S.shot, map: S.map, page: location.href };
@@ -159,7 +160,15 @@
   /* app.js calls this right after a phone page opens (d = the page element) */
   window.KA_AFTER_OPEN = function (o, PP) {
     if (!o || !PP) return; CUR = { code: o.code, k: 0 }; ev('open', o.code);
-    var pb = PP.querySelector('.pbig'), n0 = num(o); if (pb && n0) { var h0 = $e('div', 'odphint', '🔐 <b>DP ' + P(dpFor(n0, 'LBC', false)) + ' lang</b> para ma-secure ang unit na ito — ang balance, babayaran pagdating o pag-pickup. 💚'); pb.parentNode.insertBefore(h0, pb.nextSibling); }
+    var pb = PP.querySelector('.pbig'); if (pb) { var nm = A.nice ? A.nice(model(o)) : model(o), tg = o.tags || [], rows = [];
+      rows.push(['📱', 'Model', nm]);
+      if (o.storage) rows.push(['💾', 'Memory · storage', x(o.storage)]);
+      if (o.color) rows.push(['🎨', 'Kulay', x(A.nice ? A.nice(o.color) : o.color)]);
+      if (/\b5G\b/i.test(nm)) rows.push(['📶', 'Network', '5G-ready']);
+      if (tg.length) rows.push(['⭐', 'Best for', tg.map(function (t) { return x(t); }).join(' · ')]);
+      rows.push(['🔍', 'Condition', /^\s*no issue/i.test(o.diag || '') ? 'Walang issue na nakita ng checker' : 'Nakalista sa ibaba — honest at kumpleto']);
+      var sp = $e('div', 'ospecs', '<b class="osh">Tungkol sa unit na ito</b>' + rows.map(function (r) { return '<div><span>' + r[0] + ' ' + r[1] + '</span><b>' + r[2] + '</b></div>'; }).join(''));
+      pb.parentNode.insertBefore(sp, pb.nextSibling); }
     var cta = PP.querySelector('.cta'); if (cta && num(o)) { var g = $e('button', 'btn get', '🛒 GET NOW · ' + x(o.code) + '<small>Secure it with a downpayment</small>'); g.onclick = function () { start(o); }; cta.insertBefore(g, cta.firstChild); }
     var dk = PP.querySelector('.dock [data-a=reserve]'); if (dk && num(o)) { dk.textContent = '🛒 GET NOW'; dk.dataset.a = ''; dk.onclick = function () { start(o); }; }
     var gm = PP.querySelector('#gm'); if (gm) { var seen = {}; gm.addEventListener('scroll', function () { var k = Math.round(gm.scrollLeft / gm.clientWidth); CUR.k = k; if (!seen[k]) { seen[k] = 1; ev('photo', o.code, k); } }); }
