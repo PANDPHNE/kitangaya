@@ -98,7 +98,7 @@ function open(o,noPush){if(!o)return;close(true);var i=ALL.indexOf(o),p=phone(),
    '<div class="box" id="fbx"><h3>Reserve it or ask us</h3><p class="ps" style="margin:0">Leave your number and we\'ll message you. Free to ask, no pressure.</p><div id="fslot"></div></div>'+
    '</div></div><div class="sec"><h2>Similar phones, similar price</h2></div><div class="sim" id="sim"></div></div>'+
    '<div class="dock">'+(C.MESSENGER?'<a class="btn l" target="_blank" rel="noopener" data-msg="'+esc(mText(o))+'" href="'+esc(mUrl(o))+'">💬 Chat</a>':'')+(p?'<a class="btn o sq" href="tel:'+p+'" aria-label="Call">📞</a>':'')+'<button class="btn p" data-a="reserve">Reserve '+esc(o.code)+'</button></div>';
-  document.body.appendChild(d);document.body.style.overflow='hidden';PP=d;
+  document.body.appendChild(d);document.body.style.overflow='hidden';PP=d;if(window.KA_AFTER_OPEN)try{window.KA_AFTER_OPEN(o,d)}catch(e){}
   formInto(d.querySelector('#fslot'),o,'Reserve this unit');
   /* gallery */
   var slides=o.front?[{l:'CARD',src:Promise.all([img('img/f/'+o.code+'-F.jpg'),img('img/f/'+o.code+'-B.jpg'),kpFontsReady()]).then(function(im){return kpDrawCard(document.createElement('canvas'),im[0],im[1],o,o.layout,1600).toDataURL('image/jpeg',.93)})},{l:'FRONT',src:'img/f/'+o.code+'-F.jpg'},{l:'BACK',src:'img/f/'+o.code+'-B.jpg'}]:[{l:'SOON',src:Promise.resolve(soon(o))}];
@@ -170,4 +170,5 @@ fetch('data/catalog.json',{cache:'no-cache'}).then(function(r){return r.json()})
   $('sub').innerHTML='<b style="color:#B9F227">'+ALL.length+' phones</b> available now'+(up?' · updated '+up.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'}):'');
   quick();draw();var h=location.hash.slice(1).toUpperCase();if(h){var o=ALL.find(function(x){return x.code===h});if(o){try{history.replaceState(null,'',location.pathname)}catch(e){}open(o)}}})
  .catch(function(){$('sub').textContent='Could not load the phones. Please refresh the page.'});
+window.KA_APP={num:num,model:model,phone:phone,condRows:condRows,copyTxt:copyTxt,mUrl:mUrl,toast:toast,specs:specs};
 })();

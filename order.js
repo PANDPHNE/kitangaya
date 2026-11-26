@@ -142,14 +142,15 @@
   }
 
   /* ── hook into the phone page: GET NOW button + stats ── */
-  var orig = open;   // the site's own open(o)
-  open = function (o, noPush) {
-    orig(o, noPush); if (!o || !PP) return; CUR = { code: o.code, k: 0 }; ev('open', o.code);
+  /* app.js calls this right after a phone page opens (d = the page element) */
+  window.KA_AFTER_OPEN = function (o, PP) {
+    if (!o || !PP) return; CUR = { code: o.code, k: 0 }; ev('open', o.code);
     var cta = PP.querySelector('.cta'); if (cta && num(o)) { var g = $e('button', 'btn get', '🛒 GET NOW · ' + x(o.code) + '<small>Secure it with a downpayment</small>'); g.onclick = function () { start(o); }; cta.insertBefore(g, cta.firstChild); }
     var dk = PP.querySelector('.dock [data-a=reserve]'); if (dk && num(o)) { dk.textContent = '🛒 GET NOW'; dk.dataset.a = ''; dk.onclick = function () { start(o); }; }
     var gm = PP.querySelector('#gm'); if (gm) { var seen = {}; gm.addEventListener('scroll', function () { var k = Math.round(gm.scrollLeft / gm.clientWidth); CUR.k = k; if (!seen[k]) { seen[k] = 1; ev('photo', o.code, k); } }); }
   };
   document.addEventListener('click', function (e) { var a = e.target.closest('a[href]'); if (!a) return; var h = a.getAttribute('href') || '';
     if (/m\.me|messenger|facebook\.com\/messages/.test(h)) ev('msg', CUR.code, CUR.k); else if (/^tel:/.test(h)) ev('call', CUR.code, CUR.k); }, true);
+  var A = window.KA_APP || {}, num = A.num, model = A.model, phone = A.phone, condRows = A.condRows, copyTxt = A.copyTxt, mUrl = A.mUrl, toast = A.toast, specs = A.specs;
   window.KA_ORDER = { start: start, dpFor: dpFor };
 })();
