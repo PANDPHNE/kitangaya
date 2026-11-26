@@ -19,11 +19,11 @@ window.KA_CONFIG = {
     TNC_PREVIEW: 'https://drive.google.com/file/d/1biVzLeoLbPbtP6BYgCHx0muDPukDu2WB/preview',
     PAGE: 'https://www.facebook.com/mainkitangayaphoneshop',
     PAY: [
-      { label: 'GCASH 1', name: '', number: '', qr: '' },
-      { label: 'GCASH 3', name: '', number: '', qr: '' },
-      { label: 'MAYA 1', name: '', number: '', qr: '' },
-      { label: 'MAYA 2', name: '', number: '', qr: '' },
-      { label: 'BDO', name: '', number: '', qr: '' }
+      { label: 'GCASH 1', kind: 'gcash', name: 'Daphne Joy B. Tan', number: '0935 762 3410', qr: 'assets/qr-gcash1.jpg' },
+      { label: 'GCASH 3', kind: 'gcash', name: 'Abdul Raafy Bocua', number: '0931 141 3574', qr: 'assets/qr-gcash3.jpg' },
+      { label: 'MAYA 1', kind: 'maya', name: 'Daphne Joy Tan', number: '0935 762 3410', qr: 'assets/qr-maya1.jpg' },
+      { label: 'MAYA 2', kind: 'maya', name: 'Abdul Raafy Bocua', number: '0931 141 3574', qr: '' },
+      { label: 'BDO', kind: 'bank', name: 'Abdul Raafy M. Bocua', number: '002210564553', qr: '' }
     ],
     VLOGS: []   // ✏️ Facebook video links of your viral vlogs, e.g. 'https://www.facebook.com/watch/?v=123'
   }
