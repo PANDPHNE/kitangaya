@@ -30,11 +30,14 @@ jobs:
           KP_URL: https://script.google.com/macros/s/AKfycbxFmJxdZWesOuxkmwSth_YbGZWT2OnmVN03HBj4MbsPedfIdd1JKpUaL2GaRq9pbpQM/exec
           KP_PH_KEY: ${{ secrets.KP_PH_KEY }}
           BLUR_TEST: '1'
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with: { name: blur-selftest, path: selftest-blur.jpg, if-no-files-found: ignore, retention-days: 3 }
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
       - id: deploy
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - if: steps.deploy.outcome == 'failure'
+        run: sleep 20
+      - id: deploy2
+        if: steps.deploy.outcome == 'failure'
         uses: actions/deploy-pages@v4
