@@ -12,7 +12,7 @@ window.KA_CONFIG = {
   // inquiry form (Google Form → INQUIRIES tab). Filled in by Claude after setup.
   FORM: { action: 'https://docs.google.com/forms/d/e/1FAIpQLSdYt8Zf8fqAzPtGc0ZI1j_s50VfQwGDCIhcG9qcmB9wWVzrjw/formResponse',
     code: 'entry.1861826435', name: 'entry.1895610843', mobile: 'entry.1227015568', fb: 'entry.1216042472', want: 'entry.82969421', msg: 'entry.273748800', page: 'entry.550005977' },
-  REVIEWS: 'https://www.facebook.com/share/1CeWASfwPJ/',   // ✏️ link to the page's Reviews tab
+  REVIEWS: 'https://www.facebook.com/mainkitangayaphoneshop/reviews/?id=100083552312933&sk=reviews',   // ✏️ link to the page's Reviews tab
   // GET NOW ordering (Nov 26) — ✏️ fill in the account names / numbers; QR: put the image in assets/ and write its path
   ORDER: {
     URL: 'https://script.google.com/macros/s/AKfycbxFmJxdZWesOuxkmwSth_YbGZWT2OnmVN03HBj4MbsPedfIdd1JKpUaL2GaRq9pbpQM/exec',

@@ -159,6 +159,7 @@
   /* app.js calls this right after a phone page opens (d = the page element) */
   window.KA_AFTER_OPEN = function (o, PP) {
     if (!o || !PP) return; CUR = { code: o.code, k: 0 }; ev('open', o.code);
+    var pb = PP.querySelector('.pbig'), n0 = num(o); if (pb && n0) { var h0 = $e('div', 'odphint', '🔐 <b>DP ' + P(dpFor(n0, 'LBC', false)) + ' lang</b> para ma-secure ang unit na ito — ang balance, babayaran pagdating o pag-pickup. 💚'); pb.parentNode.insertBefore(h0, pb.nextSibling); }
     var cta = PP.querySelector('.cta'); if (cta && num(o)) { var g = $e('button', 'btn get', '🛒 GET NOW · ' + x(o.code) + '<small>Secure it with a downpayment</small>'); g.onclick = function () { start(o); }; cta.insertBefore(g, cta.firstChild); }
     var dk = PP.querySelector('.dock [data-a=reserve]'); if (dk && num(o)) { dk.textContent = '🛒 GET NOW'; dk.dataset.a = ''; dk.onclick = function () { start(o); }; }
     var gm = PP.querySelector('#gm'); if (gm) { var seen = {}; gm.addEventListener('scroll', function () { var k = Math.round(gm.scrollLeft / gm.clientWidth); CUR.k = k; if (!seen[k]) { seen[k] = 1; ev('photo', o.code, k); } }); }

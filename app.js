@@ -7,7 +7,8 @@ function peso(n){return '₱'+Math.round(n).toLocaleString('en-US')}
 function tag(o,t){return (o.tags||[]).indexOf(t)>=0}
 function noIssue(o){return /^\s*no issue/i.test(o.diag||'')}
 function model(o){var b=String(o.brand||'').trim(),u=String(o.unit||'').trim();if(b&&u.toUpperCase().indexOf(b.toUpperCase())===0)b='';return ((b?b+' ':'')+u).replace(/\s+/g,' ')}
-function specs(o){return [o.storage,o.color].filter(Boolean).join(' · ')}
+function nice(s){var keep=/^(5G|4G|LTE|FE|SE|XR|XS|XL|NTC|SIM|GB|TB|II|III|IV|AMOLED|OLED|USA|US|UK|HK|JP|KR|EU|LL|ZA|ZP)$/;return String(s||'').toLowerCase().replace(/[a-z0-9+]+/g,function(w){var U=w.toUpperCase();if(/^[a-z]{3,}\d+$/.test(w))return w.charAt(0).toUpperCase()+w.slice(1);if(keep.test(U)||/\d/.test(w)&&!/^\d+$/.test(w))return U;if(U==='IPHONE')return 'iPhone';if(U==='IPAD')return 'iPad';return w.charAt(0).toUpperCase()+w.slice(1)})}
+function specs(o){return [o.storage,nice(o.color)].filter(Boolean).join(' · ')}
 function save(o){var m=Number(o.market)||0,n=num(o);return m&&n&&m>n?{m:m,s:m-n,p:Math.round((m-n)/m*100)}:null}
 function priceHtml(o){var s=kpNumTxt(o.saleTxt),r=kpNumTxt(o.priceTxt),n=s||r;return n?peso(n)+(s&&r>s?'<s>'+peso(r)+'</s>':''):'Price on request'}
 function phone(){return String(C.PHONE||'').replace(/[^\d+]/g,'')}
@@ -65,7 +66,7 @@ function list(){var q=$('q').value.trim().toLowerCase().split(/\s+/).filter(Bool
 function card(o,i){return '<article class="it" data-i="'+i+'" tabindex="0" role="button" aria-label="'+esc(model(o)+' '+(o.storage||'')+', '+(num(o)?peso(num(o)):'price on request')+', code '+o.code)+'">'+
   (o.front?'<canvas data-i="'+i+'" width="600" height="600" aria-hidden="true"></canvas>':'<div class="ph" aria-hidden="true"><b>'+esc(o.code)+'</b><span>Photos coming soon</span></div>')+
   '<button class="heart'+(isSaved(o.code)?' on':'')+'" data-s="'+esc(o.code)+'" aria-label="Save '+esc(o.code)+'" aria-pressed="'+isSaved(o.code)+'">'+(isSaved(o.code)?'♥':'♡')+'</button>'+
-  '<div class="tx">'+(save(o)?'<div class="mk">Market '+peso(save(o).m)+' · <b>Save '+peso(save(o).s)+'</b></div>':'')+'<div class="pr">'+priceHtml(o)+'</div><div class="md">'+esc(model(o))+'</div><div class="spx">'+esc(specs(o))+'</div><div class="chips">'+
+  '<div class="tx">'+(save(o)?'<div class="mk">Market '+peso(save(o).m)+' · <b>Save '+peso(save(o).s)+'</b></div>':'')+'<div class="pr">'+priceHtml(o)+'</div><div class="md">'+esc(nice(model(o)))+'</div><div class="spx">'+esc(specs(o))+'</div><div class="chips">'+
   (noIssue(o)?'<span class="ch">✨ No issue</span>':'<span class="ch w">See condition</span>')+(tag(o,'GAMING')?'<span class="ch">🎮 Gaming</span>':'')+(tag(o,'CAMERA')?'<span class="ch">📷 Camera</span>':'')+
   '</div><div class="view"><span>View phone</span></div></div></article>'}
 function wire(root){[].forEach.call(root.querySelectorAll('canvas[data-i]'),function(c){IO.observe(c)});
@@ -89,7 +90,7 @@ function open(o,noPush){if(!o)return;close(true);var i=ALL.indexOf(o),p=phone(),
   d.innerHTML='<div class="ppbar"><button class="back" data-a="back">← Back</button><span class="sp"></span><button class="ib" data-a="share" aria-label="Share">↗</button><button class="ib'+(isSaved(o.code)?' on':'')+'" data-a="save" aria-label="Save">'+(isSaved(o.code)?'♥':'♡')+'</button></div>'+
    '<div class="ppin"><div class="ppcols"><div class="gal"><div class="gmain" id="gm"></div><div class="gthumbs" id="gt"></div><div class="ghint">Swipe for more photos · tap a photo to zoom</div></div><div>'+
    '<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge hot">🔥 1 unit only — paunahan!</span><span class="badge code">'+esc(o.code)+'</span></div>'+
-   '<div class="pt">'+esc(model(o))+'</div><div class="ps">'+esc(specs(o))+'</div><div class="pbig">'+priceHtml(o)+'</div>'+cmp(o)+
+   '<div class="pt">'+esc(nice(model(o)))+'</div><div class="ps">'+esc(specs(o))+'</div><div class="pbig">'+priceHtml(o)+'</div>'+cmp(o)+
    '<div class="cta">'+(C.MESSENGER?'<a class="btn l" target="_blank" rel="noopener" data-msg="'+esc(mText(o,'video'))+'" href="'+esc(mUrl(o,'video'))+'">🎥 Message us — we\'ll flex it on video 💪</a>':'')+
      (C.MESSENGER?'<a class="btn p" target="_blank" rel="noopener" data-msg="'+esc(mText(o))+'" href="'+esc(mUrl(o))+'">💬 Chat about '+esc(o.code)+' on Messenger</a>':'')+
      (p?'<div class="row"><a class="btn o" href="tel:'+p+'">📞 Call</a><a class="btn o" href="sms:'+p+'?body='+encodeURIComponent(mText(o))+'">✉ Text</a></div>':'')+'</div>'+
@@ -170,5 +171,5 @@ fetch('data/catalog.json',{cache:'no-cache'}).then(function(r){return r.json()})
   $('sub').innerHTML='<b style="color:#B9F227">'+ALL.length+' phones</b> available now'+(up?' · updated '+up.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'}):'');
   quick();draw();var h=location.hash.slice(1).toUpperCase();if(h){var o=ALL.find(function(x){return x.code===h});if(o){try{history.replaceState(null,'',location.pathname)}catch(e){}open(o)}}})
  .catch(function(){$('sub').textContent='Could not load the phones. Please refresh the page.'});
-window.KA_APP={num:num,model:model,phone:phone,condRows:condRows,copyTxt:copyTxt,mUrl:mUrl,toast:toast,specs:specs,save:save,soon:soon};
+window.KA_APP={nice:nice,num:num,model:model,phone:phone,condRows:condRows,copyTxt:copyTxt,mUrl:mUrl,toast:toast,specs:specs,save:save,soon:soon};
 })();
