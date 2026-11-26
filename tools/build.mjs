@@ -28,7 +28,7 @@ async function one([o, k, id]) {
 }
 // ── STORAGE + ABOUT: fetched privately (key), IMEI blurred here, only the blurred copy is published ──
 const KEY = process.env.KP_PH_KEY, WURL = process.env.KP_URL, saOk = new Set();
-async function wpost(body) { const r = await fetch(WURL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body), redirect: 'follow' }); const j = await r.json(); if (!j.ok) throw new Error(j.error || 'web app error'); return j; }
+async function wpost(body) { const r = await fetch(WURL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body), redirect: 'follow', signal: AbortSignal.timeout(120000) }); const j = await r.json(); if (!j.ok) throw new Error(j.error || 'web app error'); return j; }
 async function storageAbout() {
   if ((!KEY || !WURL) && !process.env.BLUR_TEST) { console.log('STORAGE/ABOUT: no key yet — skipped'); return; }
   const { blurIds, ocrStop } = await import('./blur.mjs');
@@ -38,13 +38,17 @@ async function storageAbout() {
   console.log('blur self-test: ' + (st.buf ? st.why : 'FAILED ' + st.why));
   if (!st.buf || parseInt(st.why) < 3) { console.warn('IMEI blur self-test failed — STORAGE/ABOUT not published this run'); await ocrStop(); return; }
   if (!KEY || !WURL) { await ocrStop(); return; }
+  console.log('asking the posting app for the private photo list…');
   const sa = (await wpost({ t: 'ph', k: KEY, list: 1 })).sa || {};
+  console.log('private photo list: ' + Object.keys(sa).length + ' items');
   const todo = []; for (const o of cat.items) if (o.front && sa[o.code]) sa[o.code].forEach((id, j) => todo.push([o, j ? 'A' : 'S', id]));
   const done = p => exists(p), need = [];
   for (const t of todo) { const id = t[2]; if (!(await done(`cache/${id}-pf.jpg`)) && !(await done(`cache/${id}-skip`))) need.push(t); }
-  let made = 0, skipped = 0; const MAX = 80;
+  let made = 0, skipped = 0; const MAX = 60, T0 = Date.now();
   for (let i = 0; i < Math.min(need.length, MAX); i += 4) {
+    if (Date.now() - T0 > 12 * 60e3) { console.log('time limit reached — the rest continue next hour'); break; }
     const part = need.slice(i, Math.min(i + 4, MAX)); let ph = {};
+    console.log(`fetching ${i + 1}–${i + part.length} of ${Math.min(need.length, MAX)} · ${Math.round((Date.now() - T0) / 1000)}s`);
     try { ph = (await wpost({ t: 'ph', k: KEY, ids: part.map(t => t[2]) })).ph || {}; } catch (e) { console.warn('fetch ' + e.message); continue; }
     for (const [o, k, id] of part) {
       if (!ph[id]) continue;
