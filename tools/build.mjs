@@ -36,7 +36,7 @@ async function storageAbout() {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="900"><rect width="100%" height="100%" fill="#fff"/><g font-family="DejaVu Sans, Arial" font-size="44" fill="#111"><text x="60" y="120">About phone</text><text x="60" y="240">Model name</text><text x="60" y="300">Galaxy S23 Ultra</text><text x="60" y="420">Serial number</text><text x="60" y="480">R5CW21ABCDE</text><text x="60" y="600">IMEI</text><text x="60" y="660">351234567890123</text><text x="60" y="780">Android version 14</text></g></svg>`;
   const st = await blurIds(await sharp(Buffer.from(svg)).jpeg().toBuffer(), 'A');
   console.log('blur self-test: ' + (st.buf ? st.why : 'FAILED ' + st.why));
-  if (st.buf) await fs.writeFile('selftest-blur.jpg', st.buf);
+  if (st.buf) { await fs.writeFile('selftest-blur.jpg', st.buf); await fs.copyFile('selftest-blur.jpg', 'dist/assets/selftest-blur.jpg'); }   // made-up numbers only
   if (!st.buf || parseInt(st.why) < 3) { console.warn('IMEI blur self-test failed — STORAGE/ABOUT not published this run'); await ocrStop(); return; }
   if (!KEY || !WURL) { await ocrStop(); return; }
   const sa = (await wpost({ t: 'ph', k: KEY, list: 1 })).sa || {};
