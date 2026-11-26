@@ -1,1 +1,1 @@
-{ "name": "kitangaya-shop", "private": true, "type": "module", "dependencies": { "sharp": "^0.33.5" } }
+{ "name": "kitangaya-shop", "private": true, "type": "module", "dependencies": { "sharp": "^0.33.5", "tesseract.js": "5.1.1" } }

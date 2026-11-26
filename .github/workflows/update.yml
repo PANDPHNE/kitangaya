@@ -25,7 +25,14 @@ jobs:
           key: photos-${{ github.run_id }}
           restore-keys: photos-
       - run: node tools/build.mjs
-        env: { CATALOG_ID: 1MOyZ69UzFpm7QgIbz1nJWZu2eVa6AZ-b }
+        env:
+          CATALOG_ID: 1MOyZ69UzFpm7QgIbz1nJWZu2eVa6AZ-b
+          KP_URL: https://script.google.com/macros/s/AKfycbxFmJxdZWesOuxkmwSth_YbGZWT2OnmVN03HBj4MbsPedfIdd1JKpUaL2GaRq9pbpQM/exec
+          KP_PH_KEY: ${{ secrets.KP_PH_KEY }}
+          BLUR_TEST: '1'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: blur-selftest, path: selftest-blur.jpg, if-no-files-found: ignore, retention-days: 3 }
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
